@@ -232,3 +232,100 @@ do {
 } catch {
     print(error)
 }
+
+
+/*
+ 
+ // Array of jsons
+import Foundation
+
+var json = """
+[
+    {
+        "title": "Groundhog Day",
+        "released": 1993,
+        "starring": ["Bill Murray", "Andie MacDowell", "Chris Elliot"]
+    },
+    {
+        "title": "Home Alone",
+        "released": 1990,
+        "starring": ["Macaulay Culkin", "Joe Pesci", "Daniel Stern", "John Heard", "Catherine O'Hara"]
+    }
+]
+""".data(using: .utf8)!
+
+struct Movie: Codable {
+    let titleMr: String
+    let releasedMr: Int
+    let starring : [String]
+
+    enum CodingKeys: String, CodingKey {
+        case titleMr = "title"
+        case releasedMr = "released"
+        case starring
+     }
+}
+
+
+let decoder = JSONDecoder()
+var comedies: [Movie]
+
+do {
+
+    comedies = try decoder.decode([Movie].self, from: json)
+    print(comedies)
+} catch {
+    print(error)
+}
+*/
+
+// Parsing nested json
+import Foundation
+
+var json = """
+{
+    "name": "Neha",
+    "studentId": 326156,
+    "academics": {
+        "field": "iOS",
+        "grade": "A"
+    }
+}
+""".data(using: .utf8)!
+
+// define model objects here
+
+struct Academics: Codable {
+    let myfield: String
+    let mygrade: String
+    
+    enum  CodingKeys: String, CodingKey {
+        case myfield = "field"
+        case mygrade = "grade"
+    }
+}
+
+struct Student: Codable {
+    let myname: String
+    let mystudentId: Int
+    let myacademics: Academics
+    
+    enum CodingKeys: String, CodingKey {
+        case myname = "name"
+        case mystudentId = "studentId"
+        case myacademics = "academics"
+    }
+}
+
+
+
+let decoder = JSONDecoder()
+let student: Student
+
+do {
+    // decode the JSON into the "student" constant
+   student =  try  decoder.decode(Student.self, from: json)
+    print(student)
+} catch {
+    print(error)
+}
